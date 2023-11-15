@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded',
         function ( e ) {
             let valor_selecciondao = $('#selected-db').val();
             if (valor_selecciondao != '') {
-                $(this).attr('href', 'show_tables.php?db='+valor_selecciondao);
+                $(this).attr('href', 'show_sesions.php?db='+valor_selecciondao);
             }
             else {
                 $(this).attr('href', '#');
