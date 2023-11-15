@@ -7,8 +7,11 @@ function finalizar_proceso(proceso) {
         xhr.open("POST", "close_connection.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
+            // Función onreadystatechange: Se establece una función que se ejecutará 
+            // cada vez que cambie el estado de la solicitud AJAX. Se verifica si la 
+            // solicitud está completa (readyState == 4) y si la respuesta del servidor
+            // es exitosa (status == 200).
             if (xhr.readyState == 4 && xhr.status == 200) {
-                // Se completó la solicitud, puedes realizar acciones adicionales si es necesario
                 location.reload();
             }
         };
