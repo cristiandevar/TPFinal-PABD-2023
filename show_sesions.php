@@ -13,8 +13,7 @@
             <h5 class="card-header">TPFinal PADB 2023</h5>
             <div class="card-body">
                 <h5 class="card-title">Sesiones de <?php echo \htmlspecialchars($_GET['db']) ?></h5>
-                <div  style=' height: 30em;overflow-y: auto;'>
-                        
+                <div  style=' height: 30em;overflow-y: auto;'>       
                     <table class="table table-hover table-bordered table-striped ">
                         <thead style="position: sticky; top: 0;">
                             <tr>
