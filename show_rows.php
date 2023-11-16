@@ -2,8 +2,8 @@
     require __DIR__.'/header.php'
 ?>                   
                 <h5 class="card-title">Primeras 100 filas de <?php echo $_GET['name'] ?></h5>
-                <div  style=' height: 30em;overflow-y: auto;'>
-                    <table class="table table-responsive table-sm table-bordered">
+                <div class="row" style=' height: 30em;width: 40em;overflow: auto;'>
+                    <table class="table table-sm table-bordered table-striped table-hover">
                         <thead style="position: sticky; top: 0;">
                         <?php
                             // Importamos los archivos necesarios para realizar una conexíon

@@ -42,7 +42,7 @@
                                     echo "<td>{$row['inicio']}</td>";
                                     echo "<td>{$row['estado']}</td>";
                                     echo "<td>{$row['query']}</td>";
-                                    echo "<td><a href='#' onclick='finalizar_proceso({$row['proceso']})'>Stop</a></td>";
+                                    echo "<td><a href='#' onclick='end_process({$row['proceso']})'>Stop</a></td>";
                                     echo "</tr>";
                                 }
                             ?>
