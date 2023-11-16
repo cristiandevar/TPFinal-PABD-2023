@@ -5,7 +5,7 @@ class CustomerController extends BaseController
     /** 
 * "/user/list" Endpoint - Get list of users 
 */
-    public function idAction()
+    public function id_action()
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
@@ -15,11 +15,12 @@ class CustomerController extends BaseController
                 $customerModel = new CustomerModel();
                 $id = 0;
                 
+                die(json_encode($arrQueryStringParams));
                 if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) {
                     $id = $arrQueryStringParams['id'];
                     $customer = $customerModel->get_customer_id($id);
                     if ( !$customer ) {
-                        $strErrorDesc = 'No existe cliente con ese id!';
+                        $strErrorDesc = 'No existe cliente con id: '.$id;
                         $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                     
                     }
@@ -69,7 +70,7 @@ class CustomerController extends BaseController
         }
     }
 
-    public function companynameAction()
+    public function name_action()
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
@@ -77,19 +78,18 @@ class CustomerController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $customerModel = new CustomerModel();
-                $id = 0;
-                
-                if (isset($arrQueryStringParams['companyname']) && $arrQueryStringParams['companyname']) {
-                    $companyname = $arrQueryStringParams['companyname'];
-                    $customer = $customerModel->get_customer_companyname($companyname);
+                // $id = 0;
+                if (isset($arrQueryStringParams['name']) && $arrQueryStringParams['name']) {
+                    $name = $arrQueryStringParams['name'];
+                    $customer = $customerModel->get_customer_name($name);
                     if ( !$customer ) {
-                        $strErrorDesc = 'No existe cliente con ese companyname!';
+                        $strErrorDesc = 'No existe cliente de nombre:'.$name;
                         $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                     
                     }
                 }
                 else {
-                    $strErrorDesc = 'Debe ingresar un valor para companyname!';
+                    $strErrorDesc = 'Debe ingresar un valor para name!';
                     $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                 }
                 

@@ -7,19 +7,16 @@ class CustomerModel extends Database{
         $db = 'northwind';
         $result = $this->ejecutar_consulta_db($query, $db);
         if($result){
-            // $customer = [];
             $customer = pg_fetch_assoc($result);
-            // die($customer['companyname']);
         }
         else {
             $customer = '';
         }
-        // die($customer==false);
         return $customer;
     }
 
-    public function get_customer_companyname($companyname){
-        $query = "select * from customers where companyname like '".$companyname."%' limit 1;";
+    public function get_customer_name($name){
+        $query = "select * from customers where companyname ilike '".$name."%' limit 1;";
         $db = 'northwind';
         $result = $this->ejecutar_consulta_db($query, $db);
         if($result){

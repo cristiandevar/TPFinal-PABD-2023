@@ -9,6 +9,6 @@
     require PROJECT_ROOT_PATH . "/Controller/Api/CustomerController.php";
     // die($uri[4]);
     $objFeedController = new CustomerController();
-    $strMethodName = $uri[4] . 'Action';
+    $strMethodName = $uri[4] . '_action';
     $objFeedController->{$strMethodName}();
 ?>
