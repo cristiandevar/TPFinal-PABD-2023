@@ -3,8 +3,9 @@
 class CustomerController extends BaseController
 {
     /** 
-* "/user/list" Endpoint - Get list of users 
+* "/user/list" Endpoint - Obtiene un Cliente de la base de datos Northwind
 */
+    // funcion encargada de realizar la busqueda del cliente por id
     public function id_action()
     {
         $strErrorDesc = '';
