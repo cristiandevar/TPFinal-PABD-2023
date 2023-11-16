@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Tablas</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    </head>
-    <body>
-        <div class="card position-absolute top-50 start-50 translate-middle">
-            <h5 class="card-header">TPFinal PADB 2023</h5>
-            <div class="card-body">
+<?php
+    require __DIR__.'/header.php'
+?>
                 <h5 class="card-title">Sesiones de <?php echo \htmlspecialchars($_GET['db']) ?></h5>
-                <div  style=' height: 30em;overflow-y: auto;'>
-                        
+                <div  style=' height: 30em;overflow-y: auto;'>       
                     <table class="table table-hover table-bordered table-striped ">
                         <thead style="position: sticky; top: 0;">
                             <tr>
@@ -43,7 +31,7 @@
                                     FROM pg_catalog.pg_stat_activity 
                                     WHERE datname ='".$_GET['db']."';"
                                 ;
-                                $result = $conn->ejecutar_consulta_db($query, $db);
+                                $result = $conn->exec_query_db($query, $db);
                             
                                 while ($row = pg_fetch_assoc($result)) {
                                     
@@ -54,17 +42,19 @@
                                     echo "<td>{$row['inicio']}</td>";
                                     echo "<td>{$row['estado']}</td>";
                                     echo "<td>{$row['query']}</td>";
-                                    echo "<td><a href='#' onclick='finalizar_proceso({$row['proceso']})'>Stop</a></td>";
+                                    echo "<td><a href='#' onclick='end_process({$row['proceso']})'>Stop</a></td>";
                                     echo "</tr>";
                                 }
                             ?>
                         </tbody>
                     </table> 
                 </div>
+                <div class="row mb-3">
                     <a href="index.php" class="btn btn-primary col-12 col-sm-5 m-1">Volver</a>
+                </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <script src="./js/script-sesion.js"></script>
-    </body>
-</html>
+<?php
+    require __DIR__.'/footer.php'
+?>
