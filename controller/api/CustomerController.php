@@ -1,5 +1,4 @@
 <?php
-// require_once __DIR__.'/../../Model/CustomerModel.php';
 class CustomerController extends BaseController
 {
     /** 
@@ -15,7 +14,6 @@ class CustomerController extends BaseController
                 $customerModel = new CustomerModel();
                 $id = 0;
                 
-                die(json_encode($arrQueryStringParams));
                 if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) {
                     $id = $arrQueryStringParams['id'];
                     $customer = $customerModel->get_customer_id($id);
@@ -38,7 +36,7 @@ class CustomerController extends BaseController
             $strErrorDesc = 'Método no Soportado';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
-        // send output 
+        // enviamos la respuesta 
         if (!$strErrorDesc) {
             $this->sendOutput(
                 json_encode(
@@ -78,7 +76,7 @@ class CustomerController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $customerModel = new CustomerModel();
-                // $id = 0;
+
                 if (isset($arrQueryStringParams['name']) && $arrQueryStringParams['name']) {
                     $name = $arrQueryStringParams['name'];
                     $customer = $customerModel->get_customer_name($name);
@@ -101,7 +99,7 @@ class CustomerController extends BaseController
             $strErrorDesc = 'Método no Soportado';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
-        // send output 
+        // enviamos la respuesta 
         if (!$strErrorDesc) {
             $this->sendOutput(
                 json_encode(

@@ -20,7 +20,6 @@
                     <select id="selected-db" class="form-select" aria-label="Default select example">
                         <option id="opt-default" value='' selected>Base de Datos...</option>
                         <?php
-                            // require_once __DIR__."/Model/DataBase.php";
                             require_once __DIR__."/inc/bootstrap.php";
                             $db = new DataBase();
                             $query = 'select datname from pg_database';
