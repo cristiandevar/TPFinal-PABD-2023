@@ -20,7 +20,7 @@ class Database
         $this->password = DB_PASSWORD;
     }
 
-    function ejecutar_consulta_db($sql, $db) {
+    function exec_query_db($sql, $db) {
         $conn_string = "host={$this->host} port={$this->port} dbname={$db} user={$this->user} password={$this->password}";
         $this->query = $conn_string;
         $conn = pg_connect($conn_string);
