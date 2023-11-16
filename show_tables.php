@@ -25,7 +25,8 @@
                     </thead>
                     <tbody id="tbody-table" style='height:20em;overflow-y:auto'>	
                         <?php 
-                            require_once __DIR__."/Model/DataBase.php";
+                            // require_once __DIR__."/Model/DataBase.php";
+                            require_once __DIR__."/inc/bootstrap.php";
                             $db = htmlspecialchars($_GET['db']);
                             $conn = new DataBase();
                             $query = "

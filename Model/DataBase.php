@@ -2,8 +2,8 @@
 
 // define("PROJECT_ROOT_PATH", __DIR__ . "/../");
 // incluimos el archivo principal
-require  __DIR__ . "/../inc/bootstrap.php";
-require_once PROJECT_ROOT_PATH . "/inc/config.php";
+// require  __DIR__ . "/../inc/bootstrap.php";
+// require_once PROJECT_ROOT_PATH . "/inc/config.php";
 class Database
 {
     protected $host = null;

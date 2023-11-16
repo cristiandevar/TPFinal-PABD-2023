@@ -18,8 +18,9 @@
                         <table class="table table-responsive table-sm table-bordered">
                             <thead style="position: sticky; top: 0;">
                                 <?php
-                                    require_once __DIR__."/Model/DataBase.php";
-
+                                    // require_once __DIR__."/Model/DataBase.php";
+                                    require_once __DIR__."/inc/bootstrap.php";
+                            
                                     $limit = 100000;
                                     $count = 0;
                                     $b = 0;

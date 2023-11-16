@@ -1,4 +1,5 @@
 <?php
+// require_once __DIR__.'/../../Model/CustomerModel.php';
 class CustomerController extends BaseController
 {
     /** 
@@ -9,6 +10,8 @@ class CustomerController extends BaseController
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
+        // parse_str($_SERVER['QUERY_STRING'], $query);
+        // die($arrQueryStringParams['id']);
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $customerModel = new CustomerModel();
@@ -18,14 +21,19 @@ class CustomerController extends BaseController
                 // $intLimit = 10;
                 // $companyname = '';
                 
-                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id'] && intval($arrQueryStringParams['id']) > 0) {
+                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) {
                     $id = $arrQueryStringParams['id'];
                     $customer = $customerModel->get_customer_id($id);
+                    if ( !$customer ) {
+                        $strErrorDesc = 'No existe cliente con ese id!';
+                        $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+                    
+                    }
                     // $response[''] = 
-                    $responseData = json_encode($customer);
+                    // $responseData = json_encode($customer);
                 }
                 else {
-                    $strErrorDesc = 'Debe ingresar un id numerico o mayor a cero!';
+                    $strErrorDesc = 'Debe ingresar un valor para id!';
                     $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                 }
 
@@ -37,7 +45,7 @@ class CustomerController extends BaseController
                 // }
                 
             } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Algo salio mal!.';
+                $strErrorDesc = $e->getMessage().' Algo salio mal!.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -51,7 +59,7 @@ class CustomerController extends BaseController
                     array(
                         // 'error' => $strErrorDesc
                         'status' => 'success',
-                        'data' => $responseData,
+                        'data' => $customer,
                         'message' => null 
                     )
                 ),
