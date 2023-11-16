@@ -10,16 +10,10 @@ class CustomerController extends BaseController
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
-        // parse_str($_SERVER['QUERY_STRING'], $query);
-        // die($arrQueryStringParams['id']);
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $customerModel = new CustomerModel();
-                // $response = [];
                 $id = 0;
-                
-                // $intLimit = 10;
-                // $companyname = '';
                 
                 if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) {
                     $id = $arrQueryStringParams['id'];
@@ -29,20 +23,11 @@ class CustomerController extends BaseController
                         $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                     
                     }
-                    // $response[''] = 
-                    // $responseData = json_encode($customer);
                 }
                 else {
                     $strErrorDesc = 'Debe ingresar un valor para id!';
                     $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                 }
-
-                // $arrCustomers = $customerModel->getUsers($intLimit);
-                // $responseData = json_encode($arrCustomers);
-                
-                // if ( (isset($arrQueryStringParams['companyname']) && $arrQueryStringParams['companyname']) ) {
-                //     $companyname = $arrQueryStringParams['companyname'];
-                // }
                 
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().' Algo salio mal!.';
@@ -57,7 +42,6 @@ class CustomerController extends BaseController
             $this->sendOutput(
                 json_encode(
                     array(
-                        // 'error' => $strErrorDesc
                         'status' => 'success',
                         'data' => $customer,
                         'message' => null 
@@ -72,7 +56,6 @@ class CustomerController extends BaseController
             $this->sendOutput(
                 json_encode(
                     array(
-                        // 'error' => $strErrorDesc
                         'status' => 'error',
                         'data' => null,
                         'message' => $strErrorDesc 
@@ -94,38 +77,58 @@ class CustomerController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $customerModel = new CustomerModel();
-                // $intLimit = 10;
                 $id = 0;
-                $companyname = '';
-                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) {
-                    $id = $arrQueryStringParams['id'];
-                }
-                if ( (isset($arrQueryStringParams['companyname']) && $arrQueryStringParams['companyname']) ) {
+                
+                if (isset($arrQueryStringParams['companyname']) && $arrQueryStringParams['companyname']) {
                     $companyname = $arrQueryStringParams['companyname'];
+                    $customer = $customerModel->get_customer_companyname($companyname);
+                    if ( !$customer ) {
+                        $strErrorDesc = 'No existe cliente con ese companyname!';
+                        $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+                    
+                    }
+                }
+                else {
+                    $strErrorDesc = 'Debe ingresar un valor para companyname!';
+                    $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                 }
                 
-                $response = [];
-                $customer = $customerModel->
-
-                $arrCustomers = $customerModel->getUsers($intLimit);
-                $responseData = json_encode($arrCustomers);
             } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                $strErrorDesc = $e->getMessage().' Algo salio mal!.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
-            $strErrorDesc = 'Method not supported';
+            $strErrorDesc = 'Método no Soportado';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
         // send output 
         if (!$strErrorDesc) {
             $this->sendOutput(
-                $responseData,
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+                json_encode(
+                    array(
+                        'status' => 'success',
+                        'data' => $customer,
+                        'message' => null 
+                    )
+                ),
+                array(
+                    'Content-Type: application/json',
+                    'HTTP/1.1 200 OK'
+                )
             );
         } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
+            $this->sendOutput(
+                json_encode(
+                    array(
+                        'status' => 'error',
+                        'data' => null,
+                        'message' => $strErrorDesc 
+                    )
+                ), 
+                array(
+                    'Content-Type: application/json',
+                    $strErrorHeader
+                )
             );
         }
     }

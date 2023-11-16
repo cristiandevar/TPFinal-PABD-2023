@@ -19,7 +19,7 @@ class CustomerModel extends Database{
     }
 
     public function get_customer_companyname($companyname){
-        $query = "select * from customers where companyname = '".$companyname."' limit 1;";
+        $query = "select * from customers where companyname like '".$companyname."%' limit 1;";
         $db = 'northwind';
         $result = $this->ejecutar_consulta_db($query, $db);
         if($result){
@@ -29,6 +29,7 @@ class CustomerModel extends Database{
         else {
             $customer = null;
         }
+        // die($customer);
         return $customer;
     }
 
