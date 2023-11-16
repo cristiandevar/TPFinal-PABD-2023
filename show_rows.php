@@ -18,9 +18,9 @@
                         <table class="table table-responsive table-sm table-bordered">
                             <thead style="position: sticky; top: 0;">
                                 <?php
-                                    require_once __DIR__."/Model/DataBase.php";
-
-                                    $limit = 100000;
+                                    require_once __DIR__."/inc/bootstrap.php";
+                            
+                                    $limit = 10000;
                                     $count = 0;
                                     $b = 0;
 
@@ -39,10 +39,6 @@
                                     echo '</thead>';
                                     echo "<tbody id='tbody-rows'>";
                                  
-                                    // $conn = new DataBase();
-                                    // $db = htmlspecialchars($_GET['db']);
-                                    // $table = htmlspecialchars($_GET['name']);
-                                    
                                     $query = "
                                         select *
                                         from {$table};"

@@ -1,6 +1,7 @@
 <?php
 // Este bloque de código PHP se ejecuta en el servidor
-require_once __DIR__."/Model/DataBase.php";
+// require_once __DIR__."/Model/DataBase.php";
+require_once __DIR__."/inc/bootstrap.php";
 $db = 'postgres';
 $conn = new DataBase();
 

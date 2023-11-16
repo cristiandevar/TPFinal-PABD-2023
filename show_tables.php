@@ -25,7 +25,7 @@
                     </thead>
                     <tbody id="tbody-table" style='height:20em;overflow-y:auto'>	
                         <?php 
-                            require_once __DIR__."/Model/DataBase.php";
+                            require_once __DIR__."/inc/bootstrap.php";
                             $db = htmlspecialchars($_GET['db']);
                             $conn = new DataBase();
                             $query = "
@@ -46,7 +46,6 @@
                                 echo "<td>{$table['table_name']}</td>";
                                 echo "<td>{$table['table_catalog']}</td>";
                                 echo "<td>{$rows['qty']}</td>";
-                                // echo "<td>{$table['qty']}</td>";
                                 echo "<td><a href='#'>Ver</a></td>";
                                 echo "</tr>";
                             }

@@ -1,8 +1,4 @@
 <?php
-
-define("PROJECT_ROOT_PATH", __DIR__ . "/../");
-// incluimos el archivo principal
-require_once PROJECT_ROOT_PATH . "/inc/config.php";
 class Database
 {
     protected $host = null;
@@ -33,5 +29,4 @@ class Database
         return $result;
     }
 }
-
 ?>
