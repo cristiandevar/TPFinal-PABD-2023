@@ -20,10 +20,16 @@
                                 $db = htmlspecialchars($_GET['db']);
                                 $conn = new DataBase();
                                 $query = "
-                                    select table_schema,table_name,table_catalog
-                                    from information_schema.tables
-                                    where table_type = 'BASE TABLE' and table_schema='public'
-                                    ;"
+                                SELECT 
+                                      pg_tables.schemaname AS table_schema,
+                                      pg_tables.tablename AS table_name, 
+                                      pg_roles.rolname AS table_owner
+                                FROM 
+                                      pg_tables 
+                                INNER JOIN 
+                                      pg_roles ON rolname = tableowner
+                                WHERE pg_tables.schemaname = 'public'
+                                 ;"
                                 ;
                                 $result = $conn->exec_query_db($query, $db);
                                 
@@ -37,7 +43,7 @@
                                     echo "<tr id='{$db}-{$table['table_name']}'>";
                                     echo "<td>{$table['table_schema']}</td>";
                                     echo "<td>{$table['table_name']}</td>";
-                                    echo "<td>{$table['table_catalog']}</td>";
+                                    echo "<td>{$table['table_owner']}</td>";
                                     echo "<td>{$rows['qty']}</td>";
                                     // Agregamos un link para ver las filas de cada tabla
                                     echo "<td><a href='#'>Ver</a></td>";
