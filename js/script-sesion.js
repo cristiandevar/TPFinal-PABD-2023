@@ -1,4 +1,4 @@
-function finalizar_proceso(proceso) {
+function end_process(proceso) {
     var seguro = confirm("¿Seguro que quiere cerrar la conexión " + proceso + " ?");
 
     if (seguro) {
