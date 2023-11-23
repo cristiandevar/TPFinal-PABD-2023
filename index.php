@@ -14,16 +14,30 @@
                             $db = new DataBase();
                             $query = 'select datname from pg_database';
                             $result = $db->exec_query_db($query, 'postgres');
-                            // Cargamos las opciones dentro del combo-box
-                            while ($row = pg_fetch_row($result)) {
-                                if ($row[0] != 'postgres' && $row[0]!='template0' && $row[0]!='template1' ) {
-                                    echo "<option value='$row[0]'>$row[0]</option>";
+                            if($result){
+                                // Cargamos las opciones dentro del combo-box
+                                while ($row = pg_fetch_row($result)) {
+                                    if ($row[0] != 'postgres' && $row[0]!='template0' && $row[0]!='template1' ) {
+                                        echo "<option value='$row[0]'>$row[0]</option>";
 
+                                    }
                                 }
+                                echo "
+                                    </select>
+                                    <hr>";
                             }
+                            else{
+                                // Si la consulta falla, notificamos al usuario
+                                echo "
+                                    </select>
+                                    <div class='alert alert-danger' style='heigth:5em;'>
+                                        <p>
+                                            Ocurrio un error al conectarse a la BD, ingrese nombre de la BD y de una tabla
+                                        </p>
+                                    </div>";
+                            }
+                            
                         ?>
-                    </select>
-                    <hr>
                     <label id="label-bd-1"></label>
                 </div>
                 <div class="row mb-3">

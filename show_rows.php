@@ -1,27 +1,41 @@
-<?php
-    require __DIR__.'/header.php'
-?>                   
-                <h5 class="card-title">Primeras 100 filas de <?php echo $_GET['name'] ?></h5>
-                <div class="row" style=' height: 30em;width: 40em;overflow: auto;'>
-                    <table class="table table-sm table-bordered table-striped table-hover">
-                        <thead style="position: sticky; top: 0;">
-                        <?php
-                            // Importamos los archivos necesarios para realizar una conexíon
-                            require_once __DIR__."/inc/bootstrap.php";
-                            $conn = new DataBase();
-                            
-                            // Limitamos el nro de filas a 100
-                            $limit = 100;
+                <?php
+                    require __DIR__.'/header.php';
+                    if(isset($_GET['db']) && isset($_GET['name'])){
+                        echo "<h5 class='card-title'>Primeras 100 filas de ".$_GET['name']."</h5>";
+                    }
+                    else{
+                        echo "<h5 class='card-title'>No se pueden mostrar las filas</h5>";
+                    }
 
-                            // Leemos variables pasadas por url para saber en que BD y en que TAbla hacer la consulta 
-                            $db = htmlspecialchars($_GET['db']);
-                            $table = htmlspecialchars($_GET['name']);
-                            $query = "select column_name from information_schema.columns where table_name = '{$table}'";
-                            $result = $conn->exec_query_db($query, $db);
+                    // Importamos los archivos necesarios para realizar una conexíon
+                    require_once __DIR__."/inc/bootstrap.php";
+                    $conn = new DataBase();
+                    
+                    // Limitamos el nro de filas a 100
+                    $limit = 100;
+                    if(isset($_GET['db']) && isset($_GET['name'])){
+                        // Leemos variables pasadas por url para saber en que BD y en que Tabla hacer la consulta 
+                        $db = htmlspecialchars($_GET['db']);
+                        $table = htmlspecialchars($_GET['name']);
+
+                        // Obtenemos las columnas de la tabla
+                        $query = "select column_name from information_schema.columns where table_name = '{$table}'";
+                        $result1 = $conn->exec_query_db($query, $db);
+
+                        // Otenemos 100 filas 
+                        $query = "select * from {$table} limit {$limit};";
+                        $result2 = $conn->exec_query_db($query, $db);
                             
+                        if ($result1 && $result2) {
+                            // Creamos la tabla una vez consultemos a la BD obteniendo las columnas y las filas de la tabla
+                            echo "
+                            <div class='row' style=' height: 30em;width: 40em;overflow: auto;'>
+                                <table class='table table-sm table-bordered table-striped table-hover'>
+                                    <thead style='position: sticky; top: 0;'>";
+                                    
                             // Creamos cabezal de la tabla, colocando como columnas todas las columnas de la tabla elegida
                             echo "<tr>";
-                            while ($column = pg_fetch_assoc($result)) {
+                            while ($column = pg_fetch_assoc($result1)) {
                                 echo "<th>{$column['column_name']}</th>";
                             }
                             echo "</tr>";
@@ -31,26 +45,51 @@
 
                             // Cargamos el body de la tabla con las 100 primeras filas de la tabla seleccionada
                             echo "<tbody id='tbody-rows'>";
-                            $query = "select * from {$table} limit {$limit};";
-                            $result2 = $conn->exec_query_db($query, $db);
                             while (($row = pg_fetch_array($result2))) {
                                 echo "<tr>";
                                 // Recorremos las columnas obteniendo asi el valor correspondiente para cada fila
                                 // Cada vez que vamos a recorrer las columnas debemos reiniciar el puntero mediante pg_result_seek
-                                pg_result_seek($result, 0);
+                                pg_result_seek($result1, 0);
                                 for($i = 0 ; $i<intdiv(count($row),2) ; $i++){
-                                    $column = pg_fetch_assoc($result);
+                                    $column = pg_fetch_assoc($result1);
                                     echo "<td>{$row[$column['column_name']]}</td>";
                                 }
                                 echo "</tr>";
                             }
-                            echo '</tbody>';
+                            // Una vez lleno el body, procedemos a cerrar las etiquetas
+                            echo '</tbody></table></div>';
+                        }
+                        else{
+                            // Si algunas de las consultas fallaron, se le notificara al usuario
+                            echo "
+                                <div class='alert alert-danger' style='heigth:5em;'>
+                                    <p>
+                                        No se pudo obtener las columnas y/o las filas de la Tabla
+                                    </p>
+                                </div>";
+                        }
+                    }
+                    else{
+                        // Si la variable db o table no fue proporcionada tambien le notificara al usuario
+                        echo "
+                            <div class='alert alert-danger' style='heigth:5em;'>
+                                <p>
+                                    Ocurrio un error al conectarse a la BD, ingrese nombre de la BD y de una tabla
+                                </p>
+                            </div>";
+                    }
 
-                        ?>
-                    </table>
-                </div>
+                ?>
                 <div class="row mb-3">
-                    <a id="<?php echo 'btnvolver-'.htmlspecialchars($_GET['db'])?>" href="#" class="btn btn-primary col-12 col-sm-5 m-1">Volver</a>
+                    <?php
+                        if(isset($_GET['db']) && isset($_GET['name'])){
+                            echo "<a id='btnvolver-".htmlspecialchars($_GET['db'])."' href='#' class='btn btn-primary col-12 col-sm-5 m-1'>Volver</a>";
+                        }
+                        else{
+                            echo "<a href='index.php' class='btn btn-primary col-12 col-sm-5 m-1'>Inicio</a>";
+                        }   
+                    ?>
+                    
                 </div>
             </div>
         </div>
