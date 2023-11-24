@@ -34,36 +34,9 @@ class CustomerController extends BaseController
             $strErrorDesc = 'Método no Soportado';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
-        // envio de respuesta 
-        if (!$strErrorDesc) { // Si no existe mensaje de error
-            $this->sendOutput(
-                json_encode(
-                    array(
-                        'status' => 'success',
-                        'data' => $customer,
-                        'message' => null 
-                    )
-                ),
-                array(
-                    'Content-Type: application/json',
-                    'HTTP/1.1 200 OK'
-                )
-            );
-        } else { // Si existe mensaje de error
-            $this->sendOutput(
-                json_encode(
-                    array(
-                        'status' => 'error',
-                        'data' => null,
-                        'message' => $strErrorDesc 
-                    )
-                ), 
-                array(
-                    'Content-Type: application/json',
-                    $strErrorHeader
-                )
-            );
-        }
+
+        // Envio de respuesta 
+        $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
     public function name_action()
@@ -90,7 +63,7 @@ class CustomerController extends BaseController
                 }
                 
             } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().' Algo salio mal!.';
+                $strErrorDesc = ' Algo salio mal!: '.$e->getMessage();
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
@@ -98,6 +71,11 @@ class CustomerController extends BaseController
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
         // enviamos la respuesta 
+        $this->send_response($customer, $strErrorDesc, $strErrorHeader);
+    }
+
+    public function send_response($customer, $strErrorDesc, $strErrorHeader){
+        // Se verifica el mensaje de error y en base al resultado se muestra el JSON
         if (!$strErrorDesc) {
             $this->sendOutput(
                 json_encode(

@@ -21,15 +21,13 @@ class Database
         
             $conn = pg_connect($conn_string);
             if(!$conn){
-                // Si detectamos que hubo un error en la conexión podemos mostrar un msj o bien solo retornar null
-                // echo '<div class="alert alert-danger"><p>Ocurrio un error al conectarse a la BD</p></div>';
+                // Si detectamos que hubo un error en la conexión retornamos false
                 return false;
             }
             else{
                 $result = pg_query($conn, $sql);
                 if ( !$result ) {
-                    // Si detectamos que hubo un error en la consulta podemos realizar lo mencionado antes
-                    // echo '<div class="alert alert-danger"><p>Ocurrio un error al hacer la consulta</p></div>';
+                    // Si detectamos que hubo un error en la consulta retornamos false
                     return false;
                 }
                 pg_close($conn);
