@@ -45,8 +45,8 @@ class CustomerController extends BaseController
                     )
                 ),
                 array(
-                    'Content-Type: application/json',
-                    'HTTP/1.1 200 OK'
+                    'Content-Type: application/json',  // Se informa al cliente que le van a entregar datos en formato json
+                    'HTTP/1.1 200 OK'   // informa del estado de la respuesta al cliente
                 )
             );
         } else { // Si existe mensaje de error

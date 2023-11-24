@@ -7,6 +7,24 @@
 class BaseController
 {
 
+    
+    // se utiliza para enviar la salida de la API. Permite enviar datos y encabezados HTTP.
+    // Primero, elimina cualquier cookie que pueda estar presente en los encabezados. Luego, 
+    // si se proporcionan encabezados HTTP, los envía usando header(). Finalmente, imprime 
+    // los datos y termina la ejecución del script con exit.
+
+    protected function sendOutput($data, $httpHeaders=array())
+    {
+        header_remove('Set-Cookie');
+        if (is_array($httpHeaders) && count($httpHeaders)) {
+            foreach ($httpHeaders as $httpHeader) {
+                header($httpHeader);
+            }
+        }
+        echo $data;
+        exit;
+    }
+
     // se activa cuando se intenta llamar a un método que no existe o
     // no es accesible desde fuera de la clase. En este caso, se utiliza
     // para manejar cualquier llamada a un método que no esté definido en
@@ -18,6 +36,9 @@ class BaseController
         $this->sendOutput('', array('HTTP/1.1 404 Not Found'));
     }
    
+    // Terminos utilizados
+    // URI (Identificador de Recursos Uniforme): Término general para identificar recursos en la web.
+    // URL (Localizador de Recursos Uniforme): Un tipo de URI que proporciona la forma de acceder al recurso.
 
     // se utiliza para obtener los segmentos de la URI actual. La URI es la parte
     // de la URL que identifica un recurso. Este método utiliza la variable 
@@ -45,21 +66,5 @@ class BaseController
     }
 
 
-    // se utiliza para enviar la salida de la API. Permite enviar datos y encabezados HTTP.
-    // Primero, elimina cualquier cookie que pueda estar presente en los encabezados. Luego, 
-    // si se proporcionan encabezados HTTP, los envía usando header(). Finalmente, imprime 
-    // los datos y termina la ejecución del script con exit.
-
-    protected function sendOutput($data, $httpHeaders=array())
-    {
-        header_remove('Set-Cookie');
-        if (is_array($httpHeaders) && count($httpHeaders)) {
-            foreach ($httpHeaders as $httpHeader) {
-                header($httpHeader);
-            }
-        }
-        echo $data;
-        exit;
-    }
 }
 ?>
