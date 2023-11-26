@@ -74,6 +74,43 @@ class CustomerController extends BaseController
         $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
+    public function id_name_action()
+    {
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $arrQueryStringParams = $this->getQueryStringParams();
+        if (strtoupper($requestMethod) == 'GET') {
+            try {
+                $customerModel = new CustomerModel();
+
+                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id'] &&
+                    isset($arrQueryStringParams['name']) && $arrQueryStringParams['name']) {
+                    $id = $arrQueryStringParams['id'];
+                    $name = $arrQueryStringParams['name'];
+                    $customer = $customerModel->get_customer_id_name($id,$name);
+                    if ( !$customer ) {
+                        $strErrorDesc = 'No existe cliente con id '.$id.' y nombre '.$name.'';
+                        $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+                    
+                    }
+                }
+                else {
+                    $strErrorDesc = 'Debe ingresar un valores para id y name!';
+                    $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+                }
+                
+            } catch (Error $e) {
+                $strErrorDesc = ' Algo salio mal!: '.$e->getMessage();
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Método no Soportado';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+        // enviamos la respuesta 
+        $this->send_response($customer, $strErrorDesc, $strErrorHeader);
+    }
+
     public function send_response($customer, $strErrorDesc, $strErrorHeader){
         // Se verifica el mensaje de error y en base al resultado se muestra el JSON
         if (!$strErrorDesc) {
