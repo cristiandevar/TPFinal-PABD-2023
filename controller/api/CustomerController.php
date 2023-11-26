@@ -91,7 +91,6 @@ class CustomerController extends BaseController
                     if ( !$customer ) {
                         $strErrorDesc = 'No existe cliente con id '.$id.' y nombre '.$name.'';
                         $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
-                    
                     }
                 }
                 else {

@@ -34,6 +34,8 @@ class CustomerModel extends Database{
         return $customer;
     }
 
+    // Metodo utilizado para consultar a la BD Northwind
+    // este metodo devuelve un/ningun customer dado un id
     public function get_customer_id_name($id, $name){
         $query = "select * from customers 
                   where customerid = '".$id."' and companyname ilike '".$name."%' order by customerid limit 1;";
