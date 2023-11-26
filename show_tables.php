@@ -34,15 +34,11 @@
                                     $conn = new DataBase();
                                     $query = "
                                     SELECT 
-                                        pg_tables.schemaname AS table_schema,
-                                        pg_tables.tablename AS table_name, 
-                                        pg_roles.rolname AS table_owner
-                                    FROM 
-                                        pg_tables 
-                                    INNER JOIN 
-                                        pg_roles ON rolname = tableowner
-                                    WHERE pg_tables.schemaname = 'public'
-                                    ;"
+                                        schemaname AS table_schema,
+                                        tablename AS table_name, 
+                                        tableowner AS table_owner
+                                    FROM pg_tables
+                                    WHERE schemaname = 'public';"
                                     ;
                                         
                                     $result = $conn->exec_query_db($query, $db);
