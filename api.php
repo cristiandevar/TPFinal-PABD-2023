@@ -6,7 +6,7 @@
     // Utiliza la función parse_url para obtener la parte de la URL que corresponde 
     // a la ruta del archivo (path). 
     // $_SERVER['REQUEST_URI'] contiene la URI completa de la solicitud actual.
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);    
+        
 
     // Divide la URI en segmentos utilizando el carácter / como delimitador 
     // y almacena los segmentos en un array llamado $uri
@@ -14,8 +14,10 @@
     // localhost/CarpetaProyecto/api.php/customer/{id | name}?{id | name}=
     // Obteniendo al dividir la URL un array que al menos contendra:
     // ['localhost', 'CarpetProyecto', 'api.php', 'customer']
-    $uri = explode( '/', $uri );
+    
 
+    $objFeedController = new CustomerController();
+    $uri = $objFeedController->getUriSegments();
     // Verifica ciertas condiciones en la URI.
     // Si alguna de las dichas condiciones es verdadera, se envía una 
     // respuesta HTTP 404 (Not Found) y se termina la ejecución del script.

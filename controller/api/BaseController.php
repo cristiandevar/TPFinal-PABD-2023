@@ -24,7 +24,7 @@ class BaseController
     // $_SERVER['REQUEST_URI'] para obtener la URI, la divide en segmentos usando 
     // el carácter /, y devuelve un array con los segmentos.
 
-    protected function getUriSegments()
+    public function getUriSegments()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = explode( '/', $uri );
