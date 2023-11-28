@@ -1,4 +1,4 @@
-                <?php
+<?php
                     require __DIR__.'/header.php';
                     if(isset($_GET['db']) && isset($_GET['name'])){
                         echo "<h5 class='card-title'>Primeras 100 filas de ".$_GET['name']."</h5>";
@@ -18,12 +18,21 @@
                         $db = htmlspecialchars($_GET['db']);
                         $table = htmlspecialchars($_GET['name']);
 
-                        // Obtenemos las columnas de la tabla
-                        $query = "select column_name from information_schema.columns where table_name = '{$table}'";
+                        // Obtenemos las columnas de la tabla verificando que no sean del tipo bytea ni oid
+                        $query = "select column_name 
+                                  from information_schema.columns 
+                                  where 
+                                    table_name = '{$table}'
+                                    and data_type not in ('bytea','oid');";
                         $result1 = $conn->exec_query_db($query, $db);
 
-                        // Otenemos 100 filas 
-                        $query = "select * from {$table} limit {$limit};";
+                        // Otenemos 100 filas
+                        $cols = $conn->exec_query_db($query, $db);
+                        $query = "select ".pg_fetch_assoc($cols)['column_name'];
+                        while (($col = pg_fetch_assoc($cols))){
+                            $query = $query.", {$col['column_name']}";
+                        }
+                        $query = $query." from {$table} limit {$limit};";
                         $result2 = $conn->exec_query_db($query, $db);
                             
                         if ($result1 && $result2) {
