@@ -21,9 +21,13 @@ class BaseController
 
     // se utiliza para obtener los segmentos de la URI actual. La URI es la parte
     // de la URL que identifica un recurso. Este método utiliza la variable 
-    // $_SERVER['REQUEST_URI'] para obtener la URI, la divide en segmentos usando 
-    // el carácter /, y devuelve un array con los segmentos.
-
+    // $_SERVER['REQUEST_URI'] para obtener la URI, divide dicha URI en segmentos usando 
+    // el carácter / como separador, y devuelve un array conteniendo los segmentos.
+    // La URI Debe seguir el siguiente formato:
+    // localhost/CarpetaProyecto/api.php/customer/{id | name}?{id | name}=
+    // Obteniendo al dividir la URL un array que al menos contendra:
+    // ['', 'CarpetProyecto', 'api.php', 'customer']
+    
     public function getUriSegments()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -59,6 +63,7 @@ class BaseController
             }
         }
         echo $data;
+
         exit;
     }
 }

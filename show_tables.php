@@ -27,7 +27,7 @@
                                 // Importamos los archivos necesarios para crear una conexión
                                 require_once __DIR__."/inc/bootstrap.php";
                                 
-                                //Controlamos nuevamente si db fue enviada por la URL
+                                // Controlamos nuevamente si db fue enviada por la URL
                                 if(isset($_GET['db'])){
                                     
                                     $db = htmlspecialchars($_GET['db']);

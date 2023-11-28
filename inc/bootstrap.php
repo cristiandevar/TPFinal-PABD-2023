@@ -3,8 +3,11 @@ define("PROJECT_ROOT_PATH", __DIR__ . "/../");
 // incluimos el archivo principal de configuracion 
 require_once PROJECT_ROOT_PATH . "/inc/config.php";
 
-// incluimos el archivo del controlador base 
+// incluimos el Controlador base para la API
 require_once PROJECT_ROOT_PATH . "/Controller/Api/BaseController.php";
+
+// incluimos el Controlador de la API para la tabla Customer
+require_once PROJECT_ROOT_PATH . "/Controller/Api/CustomerController.php";
 
 // incluimos el archivo del modelo base
 require_once PROJECT_ROOT_PATH . "/Model/Database.php";

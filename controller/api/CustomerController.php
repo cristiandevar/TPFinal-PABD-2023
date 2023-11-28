@@ -5,32 +5,47 @@ class CustomerController extends BaseController
     // funcion encargada de realizar la busqueda del cliente por id
     public function id_action()
     {
-        $strErrorDesc = ''; // String de Error
-        $requestMethod = $_SERVER["REQUEST_METHOD"]; // Obtención del Metodo de la Solicitud
-        $arrQueryStringParams = $this->getQueryStringParams();  // Asignación del array de parametros de la URL
-        if (strtoupper($requestMethod) == 'GET') {  // Si el Metodo es GET
+        // Obtención del Metodo de la Solicitud
+        $requestMethod = $_SERVER["REQUEST_METHOD"]; 
+
+        // Si el Metodo es GET SEguimos procesando la solicitud, de lo contrario generamos un error
+        if (strtoupper($requestMethod) == 'GET') {  
             try {
+                // Iniciamos en vacio al string de Error
+                $strErrorDesc = ''; 
+                // Asignación del array de parametros de la URL
+                $arrQueryStringParams = $this->getQueryStringParams();  
                 $customerModel = new CustomerModel();   
                 $id = 0;
+
                 // si hay valor en el array asociativo con clave ¨id¨ y no esta la cadena vacia
-                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) { // caso .../id? | .../id?id=
-                    $id = $arrQueryStringParams['id'];  // Asignando el id
-                    $customer = $customerModel->get_customer_id($id);   // Trae la primer fila que coincida con el id en customers
-                    if ( !$customer ) {         // Si no trajo ninguna Fila
+                if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id']) { 
+                    // Obtenemos el Id y generamos la consulta, trayendo la primer fila que 
+                    // coincida con el id en customers
+                    $id = $arrQueryStringParams['id']; 
+                    $customer = $customerModel->get_customer_id($id);   
+
+                    // Si no trajo ninguna Fila generará un json de tipo error como respuesta
+                    if ( !$customer ) {         
                         $strErrorDesc = 'No existe cliente con id: '.$id;
                         $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                     }
                 } 
-                else { // si no hay valor en clave id
+                else { 
+                    // si no hay valor en clave id o el valor es una cadena vacia
+                    // caso .../id? | .../id?id=
+                    // Tambien generará un json de tipo error como respuesta
                     $strErrorDesc = 'Debe ingresar un valor para id!';
                     $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                 }
                 
-            } catch (Error $e) {    //en caso de error
+            } catch (Error $e) {    
+                // en caso de error inesperado, generará un json de tipo error como respuesta
                 $strErrorDesc = $e->getMessage().' Algo salio mal!.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
-        } else { // En caso de elegir cualquier Metodo no Soportado
+        } else { 
+            // En caso de elegir cualquier Metodo no Soportado
             $strErrorDesc = 'Método no Soportado';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
@@ -39,15 +54,15 @@ class CustomerController extends BaseController
         $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
+    // Analogo al método anterior
     public function name_action()
     {
-        $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $strErrorDesc = '';
                 $customerModel = new CustomerModel();
-
+                $arrQueryStringParams = $this->getQueryStringParams();
                 if (isset($arrQueryStringParams['name']) && $arrQueryStringParams['name']) {
                     $name = $arrQueryStringParams['name'];
                     $customer = $customerModel->get_customer_name($name);
@@ -74,6 +89,7 @@ class CustomerController extends BaseController
         $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
+    
     public function id_name_action()
     {
         $strErrorDesc = '';
