@@ -41,7 +41,7 @@ class CustomerController extends BaseController
                 
             } catch (Error $e) {    
                 // en caso de error inesperado, generará un json de tipo error como respuesta
-                $strErrorDesc = $e->getMessage().' Algo salio mal!.';
+                $strErrorDesc = 'Algo salio mal!: '. $e->getMessage();
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else { 
@@ -54,7 +54,7 @@ class CustomerController extends BaseController
         $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
-    // Analogo al método anterior
+    // Análogo al método anterior, pero tomando en cuenta el companyname del customer  
     public function name_action()
     {
         $requestMethod = $_SERVER["REQUEST_METHOD"];
@@ -69,14 +69,12 @@ class CustomerController extends BaseController
                     if ( !$customer ) {
                         $strErrorDesc = 'No existe cliente de nombre:'.$name;
                         $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
-                    
                     }
                 }
                 else {
                     $strErrorDesc = 'Debe ingresar un valor para name!';
                     $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
                 }
-                
             } catch (Error $e) {
                 $strErrorDesc = ' Algo salio mal!: '.$e->getMessage();
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
@@ -89,16 +87,15 @@ class CustomerController extends BaseController
         $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
-    
+    // Analogo al metodo id_action, pero tomando en cuenta el id y el companyname del customer
     public function id_name_action()
     {
-        $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $strErrorDesc = '';
+                $arrQueryStringParams = $this->getQueryStringParams();
                 $customerModel = new CustomerModel();
-
                 if (isset($arrQueryStringParams['id']) && $arrQueryStringParams['id'] &&
                     isset($arrQueryStringParams['name']) && $arrQueryStringParams['name']) {
                     $id = $arrQueryStringParams['id'];
@@ -121,11 +118,11 @@ class CustomerController extends BaseController
         } else {
             $strErrorDesc = 'Método no Soportado';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
-        }
-        // enviamos la respuesta 
+        } 
         $this->send_response($customer, $strErrorDesc, $strErrorHeader);
     }
 
+    // Funcion que prepara la respuesta
     public function send_response($customer, $strErrorDesc, $strErrorHeader){
         // Se verifica el mensaje de error y en base al resultado se muestra el JSON
         if (!$strErrorDesc) {
